@@ -33,21 +33,32 @@ public class PropertyServlet extends BaseBackServlet {
     public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
         int id=Integer.parseInt(request.getParameter("id"));
         Property p=propertyDAO.get(id);
-        int cid=p.getCategory().getId();
+//        int cid=p.getCategory().getId();
         request.setAttribute("property",p);
-        request.setAttribute("cid",cid);
+//        request.setAttribute("cid",cid);
         return "admin/editProperty.jsp";
     }
 
     @Override
     public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
-        int id=Integer.parseInt(request.getParameter("id"));
-        String name=request.getParameter("name");
+        int id=Integer.parseInt(request.getParameter("propertyEditId"));
+        String name=request.getParameter("propertyEditName");
         Property p=propertyDAO.get(id);
         p.setName(name);
         propertyDAO.update(p);
         return "@admin_property_list?cid="+p.getCategory().getId();
     }
+
+
+//    @Override
+//    public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
+//        int id=Integer.parseInt(request.getParameter("id"));
+//        String name=request.getParameter("name");
+//        Property p=propertyDAO.get(id);
+//        p.setName(name);
+//        propertyDAO.update(p);
+//        return "@admin_property_list?cid="+p.getCategory().getId();
+//    }
 
     @Override
     public String list(HttpServletRequest request, HttpServletResponse response, Page page) {

@@ -29,7 +29,7 @@
 
 <div class="workingArea">
     <ol class="breadcrumb">
-        <li><a href="admin_property_list?cid=${cid}">所有属性</a></li>
+        <li><a href="admin_property_list?cid=${property.category.id}">所有属性</a></li>
         <li class="active">编辑属性</li>
     </ol>
 
@@ -39,7 +39,7 @@
             <form method="post" id="editForm" action="admin_property_update">
                 <table class="editTable">
                     <tr>
-                        <td>分类名称</td>
+                        <td>属性名称</td>
                         <td><input id="name" name="name" value="${property.name}" type="text" class="form-control"></td>
                     </tr>
                     <tr class="submitTR">

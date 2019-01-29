@@ -14,13 +14,14 @@
 <%@include file="../include/admin/adminHeader.jsp" %>
 <%@include file="../include/admin/adminNavigator.jsp" %>
 <script>
-    $(function () {
-        $("#addForm").submit(function () {
-            if (!checkEmpty("name", "属性名称"))
-                return false;
-            return true;
-        });
-    });
+    function showModal(obj) {
+        var index=$(obj).attr("id");
+        var id=document.getElementById("propertyDetail").rows[index].cells[0].innerText;
+        var name=document.getElementById('propertyDetail').rows[index].cells[1].innerText;
+        $("#propertyEditId").val(id);
+        $("#propertyEditName").val(name);
+        $("#myModal").modal('show');
+    }
 </script>
 
 <title>属性管理</title>
@@ -34,7 +35,7 @@
 
 
     <div class="listDataTableDiv">
-        <table class="table table-striped table-bordered table-hover table-condensed text-center">
+        <table id="propertyDetail" class="table table-striped table-bordered table-hover table-condensed text-center">
             <thead>
             <tr class="success">
                 <th>ID</th>
@@ -44,12 +45,13 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${ps}" var="p">
+            <c:forEach items="${ps}" var="p" varStatus="st">
                 <tr>
                     <td>${p.id}</td>
                     <td>${p.name}</td>
                     <td>
-                        <a href="admin_property_edit?id=${p.id}"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a id="${st.count}" onclick="showModal(this)" href="javascript:void(0)"><span class="glyphicon glyphicon-edit"></span></a>
+                        <%--<a href="admin_property_edit?id=${p.id}"><span class="glyphicon glyphicon-edit"></span></a>--%>
                     </td>
                     <td>
                         <a href="admin_property_delete?id=${p.id}"><span class="glyphicon glyphicon-trash"></span></a>
@@ -60,6 +62,38 @@
 
         </table>
     </div>
+    <%--modal窗口提交--%>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">属性编辑</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="editForm" action="admin_property_update">
+                        <table class="editTable">
+                            <tr>
+                                <td>属性名称</td>
+                                <td><input id="propertyEditName" name="propertyEditName" type="text" class="form-control"></td>
+                            </tr>
+                            <tr class="submitTR">
+                                <td colspan="2" align="center">
+                                    <input type="hidden" id="propertyEditId" name="propertyEditId">
+                                    <button type="submit" class="btn btn-success" onclick="return checkEmpty('propertyEditName','属性名称')">提 交</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <%--<div class="modal-footer">--%>
+                    <%--<button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>--%>
+                    <%--<button class="btn btn-primary" id="submit" type="button">提交</button>--%>
+                <%--</div>--%>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
     <div class="pageDiv">
         <%@include file="../include/admin/adminPage.jsp"%>
     </div>
@@ -76,7 +110,9 @@
                     <tr class="submitTR text-center">
                         <td colspan="2">
                             <input type="hidden" name="cid" value="${c.id}">
-                            <button type="submit" class="btn btn-success">提交</button>
+                            <button type="submit" class="btn btn-success" onclick="return checkEmpty('name','属性名称')">
+                                提交
+                            </button>
                         </td>
                     </tr>
                 </table>
