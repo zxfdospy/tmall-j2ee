@@ -111,6 +111,8 @@ public class PropertyDAO {
         return bean;
     }
 
+
+
     public List<Property> list(int cid) {
         return list(cid, 0, Short.MAX_VALUE);
     }

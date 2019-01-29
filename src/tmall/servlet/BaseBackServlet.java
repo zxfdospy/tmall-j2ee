@@ -46,15 +46,34 @@ public abstract class BaseBackServlet extends HttpServlet {
         try {
 //            System.out.println("come to basebackservlet");
 //            定义分页信息
-            int start = 0;
-            int count = 5;
-            try {
-                start = Integer.parseInt(req.getParameter("page.start"));
-                count = Integer.parseInt(req.getParameter("page.count"));
-            } catch (Exception e) {
+//            int start = 0;
+//            int count = 5;
+//            try {
+//                start = Integer.parseInt(req.getParameter("page.start"));
+//                count = Integer.parseInt(req.getParameter("page.count"));
+//            } catch (Exception e) {
+//            }
+            Page page = new Page(0, 5);
+            //根据不同的servlet定义分页count
+            String servlet = this.getClass().toString();
+            servlet = StringUtils.substringAfterLast(servlet, ".");
+            System.out.println(servlet);
+            switch (servlet) {
+                case "CategoryServlet":
+                    page.setCount(5);
+                    break;
+                case "PropertyServlet":
+                    page.setCount(8);
+                    break;
+                default:
+                    break;
             }
-            Page page = new Page(start, count);
+            try {
+                int start = Integer.parseInt(req.getParameter("page.start"));
+                page.setStart(start);
+            }catch (Exception e){
 
+            }
 //            反射来调用对应方法
             String method = (String) req.getAttribute("method");
             Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class, javax.servlet.http.HttpServletResponse.class, Page.class);
@@ -76,7 +95,7 @@ public abstract class BaseBackServlet extends HttpServlet {
     }
 
     public FileItem parseUpload(HttpServletRequest request, Map<String, String> params) {
-        FileItem is = null;
+        FileItem fi = null;
         try {
             DiskFileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
@@ -86,19 +105,19 @@ public abstract class BaseBackServlet extends HttpServlet {
             Iterator iter = items.iterator();
             while (iter.hasNext()) {
                 FileItem item = (FileItem) iter.next();
-                if(item.isFormField()){
+                if (item.isFormField()) {
                     //isFormField如果是普通文本段返回ture,如果是false一般可以判定为文件
-                    String paramName=item.getFieldName();
-                    String paramValue=item.getString();
-                    paramValue=new String(paramValue.getBytes("ISO-8859-1"),"UTF-8");
-                    params.put(paramName,paramValue);
-                }else {
-                    is=item;
+                    String paramName = item.getFieldName();
+                    String paramValue = item.getString();
+                    paramValue = new String(paramValue.getBytes("ISO-8859-1"), "UTF-8");
+                    params.put(paramName, paramValue);
+                } else {
+                    fi = item;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return is;
+        return fi;
     }
 }

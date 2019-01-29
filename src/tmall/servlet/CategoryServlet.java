@@ -20,7 +20,7 @@ public class CategoryServlet extends BaseBackServlet{
     @Override
     public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
         Map<String,String> params=new HashMap<>();
-        FileItem is=super.parseUpload(request,params);
+        FileItem fi=super.parseUpload(request,params);
         String name=params.get("name");
         Category c=new Category();
         c.setName(name);
@@ -32,8 +32,8 @@ public class CategoryServlet extends BaseBackServlet{
         File file=new File(imageFolder,c.getId()+".jpg");
         file.getParentFile().mkdirs();
         try{
-            if(is!=null&&!is.isFormField()){
-                is.write(file);
+            if(fi!=null&&fi.getSize()!=0){
+                fi.write(file);
                 BufferedImage img= ImageUtil.change2jpg(file);
                 ImageIO.write(img,"jpg",file);
             }

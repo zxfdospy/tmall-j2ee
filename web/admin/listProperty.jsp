@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: zxfdo
-  Date: 2019/1/28
-  Time: 0:10
+  Date: 2019/1/29
+  Time: 14:49
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -16,44 +16,44 @@
 <script>
     $(function () {
         $("#addForm").submit(function () {
-            if (!checkEmpty("name", "分类名称"))
-                return false;
-            if (!checkEmpty("categoryPic", "分类图片"))
+            if (!checkEmpty("name", "属性名称"))
                 return false;
             return true;
         });
     });
 </script>
 
-<title>分类管理</title>
+<title>属性管理</title>
 
 <div class="workingArea">
-    <h1 class="label label-info ">分类管理</h1>
-    <br>
-    <br>
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <li><a href="admin_property_list?cid=${c.id}">${c.name}</a></li>
+        <li class="active">属性管理</li>
+    </ol>
+
 
     <div class="listDataTableDiv">
         <table class="table table-striped table-bordered table-hover table-condensed text-center">
             <thead>
             <tr class="success">
                 <th>ID</th>
-                <th>图片</th>
-                <th>分类名称</th>
-                <th>属性管理</th>
+                <th>属性名称</th>
                 <th>编辑</th>
                 <th>删除</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${thecs}" var="c">
+            <c:forEach items="${ps}" var="p">
                 <tr>
-                    <td>${c.id}</td>
-                    <td><img src="img/category/${c.id}.jpg" height="40px"></td>
-                    <td>${c.name}</td>
-                    <td><a href="admin_property_list?cid=${c.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
-                    <td><a href="admin_category_edit?id=${c.id}"><span class="glyphicon glyphicon-edit"></span></a></td>
-                    <td><a deleteLink="ture" href="admin_category_delete?id=${c.id}"><span
-                            class="glyphicon glyphicon-trash"></span></a></td>
+                    <td>${p.id}</td>
+                    <td>${p.name}</td>
+                    <td>
+                        <a href="admin_property_edit?id=${p.id}"><span class="glyphicon glyphicon-edit"></span></a>
+                    </td>
+                    <td>
+                        <a href="admin_property_delete?id=${p.id}"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -65,20 +65,17 @@
     </div>
 
     <div class="panel panel-warning addDiv">
-        <div class="panel-heading">新增分类</div>
+        <div class="panel-heading">新增属性</div>
         <div class="panel-body">
-            <form method="post" id="addForm" action="admin_category_add" enctype="multipart/form-data">
+            <form method="post" id="addForm" action="admin_property_add">
                 <table class="addTable">
                     <tr>
-                        <td>分类名称</td>
+                        <td>属性名称</td>
                         <td><input type="text" id="name" name="name" class="form-control"></td>
-                    </tr>
-                    <tr>
-                        <td>分类图片</td>
-                        <td><input id="categoryPic" type="file" accept="image/*" name="filepath"></td>
                     </tr>
                     <tr class="submitTR text-center">
                         <td colspan="2">
+                            <input type="hidden" name="cid" value="${c.id}">
                             <button type="submit" class="btn btn-success">提交</button>
                         </td>
                     </tr>
@@ -93,6 +90,7 @@
 </div>
 
 <%@include file="../include/admin/Footer.jsp"%>
+
 
 
 

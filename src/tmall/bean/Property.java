@@ -4,6 +4,7 @@ public class Property {
  
     private String name;
     private Category category;
+    //id实际指向category的id，外部调用的时候一般命名为cid
     private int id;
  
     public int getId() {

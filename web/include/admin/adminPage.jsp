@@ -33,9 +33,9 @@
         </li>
         <%--varStatus="status" 表示遍历的状态,count基1,index基0--%>
         <c:forEach begin="0" end="${page.totalPage-1}" varStatus="status">
-            <c:if test="${status.count*5-page.start<=20 && status.count*5-page.start>=-10}">
+            <c:if test="${status.count*page.count-page.start<=20 && status.count*page.count-page.start>=-10}">
             <li>
-                <a href="?page.start=${status.index*page.count}"
+                <a href="?page.start=${status.index*page.count}${page.param}"
                    <c:if test="${page.start==status.index*page.count}">class="current" </c:if>>${status.count}</a>
             </li>
             </c:if>
