@@ -41,7 +41,7 @@ public class ProductDAO {
   
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getSubTitle());
-            ps.setFloat(3, bean.getOrignalPrice());
+            ps.setFloat(3, bean.getOriginalPrice());
             ps.setFloat(4, bean.getPromotePrice());
             ps.setInt(5, bean.getStock());
             ps.setInt(6, bean.getCategory().getId());
@@ -66,7 +66,7 @@ public class ProductDAO {
  
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getSubTitle());
-            ps.setFloat(3, bean.getOrignalPrice());
+            ps.setFloat(3, bean.getOriginalPrice());
             ps.setFloat(4, bean.getPromotePrice());
             ps.setInt(5, bean.getStock());
             ps.setInt(6, bean.getCategory().getId());
@@ -116,7 +116,7 @@ public class ProductDAO {
                
                 bean.setName(name);
                 bean.setSubTitle(subTitle);
-                bean.setOrignalPrice(orignalPrice);
+                bean.setOriginalPrice(orignalPrice);
                 bean.setPromotePrice(promotePrice);
                 bean.setStock(stock);
                 Category category = new CategoryDAO().get(cid);
@@ -161,7 +161,7 @@ public class ProductDAO {
  
                 bean.setName(name);
                 bean.setSubTitle(subTitle);
-                bean.setOrignalPrice(orignalPrice);
+                bean.setOriginalPrice(orignalPrice);
                 bean.setPromotePrice(promotePrice);
                 bean.setStock(stock);
                 bean.setCreateDate(createDate);
@@ -204,7 +204,7 @@ public class ProductDAO {
  
                 bean.setName(name);
                 bean.setSubTitle(subTitle);
-                bean.setOrignalPrice(orignalPrice);
+                bean.setOriginalPrice(orignalPrice);
                 bean.setPromotePrice(promotePrice);
                 bean.setStock(stock);
                 bean.setCreateDate(createDate);
@@ -248,7 +248,7 @@ public class ProductDAO {
     public void setFirstProductImage(Product p) {
         List<ProductImage> pis= new ProductImageDAO().list(p, ProductImageDAO.type_single);
         if(!pis.isEmpty())
-            p.setFirstProductImage(pis.get(0));    
+            p.setFirstProductImage(pis.get(pis.size()-1));
     }
      
     public void setSaleAndReviewNumber(Product p) {
@@ -293,7 +293,7 @@ public class ProductDAO {
  
                     bean.setName(name);
                     bean.setSubTitle(subTitle);
-                    bean.setOrignalPrice(orignalPrice);
+                    bean.setOriginalPrice(orignalPrice);
                     bean.setPromotePrice(promotePrice);
                     bean.setStock(stock);
                     bean.setCreateDate(createDate);

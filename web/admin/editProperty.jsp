@@ -55,4 +55,4 @@
 
 </div>
 
-<%@include file="../include/admin/Footer.jsp"%>
+<%@include file="../include/admin/adminFooter.jsp"%>

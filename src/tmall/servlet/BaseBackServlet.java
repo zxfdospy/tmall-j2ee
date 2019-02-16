@@ -57,11 +57,12 @@ public abstract class BaseBackServlet extends HttpServlet {
             //根据不同的servlet定义分页count
             String servlet = this.getClass().toString();
             servlet = StringUtils.substringAfterLast(servlet, ".");
-            System.out.println(servlet);
+//            System.out.println(servlet);
             switch (servlet) {
                 case "CategoryServlet":
                     page.setCount(5);
                     break;
+                case "UserServlet":
                 case "PropertyServlet":
                     page.setCount(8);
                     break;
@@ -71,7 +72,7 @@ public abstract class BaseBackServlet extends HttpServlet {
             try {
                 int start = Integer.parseInt(req.getParameter("page.start"));
                 page.setStart(start);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 //            反射来调用对应方法

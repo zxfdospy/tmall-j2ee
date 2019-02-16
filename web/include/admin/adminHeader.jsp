@@ -28,6 +28,17 @@
             return true;
         }
 
+        function checkZero(id,name) {
+            var value=$("#"+id).val();
+            // alert(isNaN(value));
+            if(value<=0) {
+                alert(name+"不能为0");
+                $("#"+id).focus();
+                return false;
+            }
+            return true
+        }
+
         function checkNumber(id,name) {
             var value=$("#"+id).val();
             if(value.length==0){

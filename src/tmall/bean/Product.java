@@ -31,10 +31,10 @@ public class Product {
     public void setSubTitle(String subTitle) {
         this.subTitle = subTitle;
     }
-    public long getOrignalPrice() {
+    public long getOriginalPrice() {
         return originalPrice;
     }
-    public void setOrignalPrice(long originalPrice) {
+    public void setOriginalPrice(long originalPrice) {
         this.originalPrice = originalPrice;
     }
     public long getPromotePrice() {

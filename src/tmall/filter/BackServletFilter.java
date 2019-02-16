@@ -27,6 +27,9 @@ public class BackServletFilter implements Filter {
         String uri=request.getRequestURI();
 //        System.out.println(uri);
 
+        StringBuffer url=request.getRequestURL();
+//        System.out.println(url);
+
         uri= StringUtils.remove(uri,contextPath);
 
         if(uri.startsWith("/admin_")){

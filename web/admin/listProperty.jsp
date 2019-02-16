@@ -14,13 +14,13 @@
 <%@include file="../include/admin/adminHeader.jsp" %>
 <%@include file="../include/admin/adminNavigator.jsp" %>
 <script>
-    function showModal(obj) {
+    function showPropertyEditModal(obj) {
         var index=$(obj).attr("id");
         var id=document.getElementById("propertyDetail").rows[index].cells[0].innerText;
         var name=document.getElementById('propertyDetail').rows[index].cells[1].innerText;
         $("#propertyEditId").val(id);
         $("#propertyEditName").val(name);
-        $("#myModal").modal('show');
+        $("#propertyEditModal").modal('show');
     }
 </script>
 
@@ -50,7 +50,7 @@
                     <td>${p.id}</td>
                     <td>${p.name}</td>
                     <td>
-                        <a id="${st.count}" onclick="showModal(this)" href="javascript:void(0)"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a id="${st.count}" onclick="showPropertyEditModal(this)" href="javascript:void(0)"><span class="glyphicon glyphicon-edit"></span></a>
                         <%--<a href="admin_property_edit?id=${p.id}"><span class="glyphicon glyphicon-edit"></span></a>--%>
                     </td>
                     <td>
@@ -63,15 +63,15 @@
         </table>
     </div>
     <%--modal窗口提交--%>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" >
+    <div class="modal fade" id="propertyEditModal" tabindex="-1" role="dialog" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-warning">
-                    <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <button data-dismiss="modal" class="close" type="button">×<span class="sr-only">Close</span></button>
                     <h4 class="modal-title">属性编辑</h4>
                 </div>
                 <div class="modal-body">
-                    <form method="post" id="editForm" action="admin_property_update">
+                    <form method="post" id="propertyEditForm" action="admin_property_update">
                         <table class="editTable">
                             <tr>
                                 <td>属性名称</td>
@@ -101,7 +101,7 @@
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增属性</div>
         <div class="panel-body">
-            <form method="post" id="addForm" action="admin_property_add">
+            <form method="post" id="propertyAddForm" action="admin_property_add">
                 <table class="addTable">
                     <tr>
                         <td>属性名称</td>
@@ -125,7 +125,7 @@
     </div>
 </div>
 
-<%@include file="../include/admin/Footer.jsp"%>
+<%@include file="../include/admin/adminFooter.jsp"%>
 
 
 
