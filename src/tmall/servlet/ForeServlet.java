@@ -71,7 +71,9 @@ public class ForeServlet extends BaseForeServlet {
         Product p = productDAO.get(pid);
 
         List<ProductImage> productSingleImages = productImageDAO.list(p, ProductImageDAO.type_single);
+//        productSingleImages.sort(Comparator.comparing(ProductImage::getLocation));
         List<ProductImage> productDetailImages = productImageDAO.list(p, ProductImageDAO.type_detail);
+//        productDetailImages.sort(Comparator.comparing(ProductImage::getLocation));
         p.setProductSingleImages(productSingleImages);
         p.setProductDetailImages(productDetailImages);
 

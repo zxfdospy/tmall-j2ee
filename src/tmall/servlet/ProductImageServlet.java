@@ -25,11 +25,13 @@ public class ProductImageServlet extends BaseBackServlet {
         //根据上传的参数生成productImage对象
         String type = params.get("type");
         int pid = Integer.parseInt(params.get("pid"));
+        int location=Integer.parseInt(params.get("location"));
         Product p = productDAO.get(pid);
 
         ProductImage pi = new ProductImage();
         pi.setType(type);
         pi.setProduct(p);
+        pi.setLocation(location);
         productImageDAO.add(pi);
         //生成文件
         String fileName = pi.getId() + ".jpg";
@@ -97,7 +99,51 @@ public class ProductImageServlet extends BaseBackServlet {
 
     @Override
     public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
-        return null;
+        int piid = Integer.parseInt(request.getParameter("piid"));
+        int newlocation = Integer.parseInt(request.getParameter("newlocation"));
+        String imagetype = request.getParameter("imagetype");
+        String edittype = request.getParameter("edittype");
+        Product p = productImageDAO.get(piid).getProduct();
+        List<ProductImage> pis = productImageDAO.list(p, imagetype);
+        if (edittype.equals("down")) {
+            if (newlocation == pis.size())
+                return "%success";
+            for (ProductImage pi : pis) {
+                for (ProductImage pi2 : pis) {
+                    if (pi2.getLocation() == newlocation) {
+                        pi2.setLocation(newlocation - 1);
+                        productImageDAO.update(pi2);
+                        break;
+                    }
+                }
+                if (pi.getId() == piid) {
+                    pi.setLocation(newlocation);
+                    productImageDAO.update(pi);
+                    break;
+                }
+            }
+        } else {
+            if (newlocation < 0) {
+                return "%success";
+            }
+            for (ProductImage pi : pis) {
+                for (ProductImage pi2 : pis) {
+                    if (pi2.getLocation() == newlocation) {
+                        pi2.setLocation(newlocation + 1);
+                        productImageDAO.update(pi2);
+                        break;
+                    }
+
+                }
+                if (pi.getId() == piid) {
+                    pi.setLocation(newlocation);
+                    productImageDAO.update(pi);
+                    break;
+                }
+            }
+        }
+
+        return "%success";
     }
 
     @Override
@@ -105,6 +151,7 @@ public class ProductImageServlet extends BaseBackServlet {
         int pid = Integer.parseInt(request.getParameter("pid"));
         Product p = productDAO.get(pid);
         List<ProductImage> pisSingle = productImageDAO.list(p, ProductImageDAO.type_single);
+
         List<ProductImage> pisDetail = productImageDAO.list(p, ProductImageDAO.type_detail);
 
         request.setAttribute("p", p);

@@ -10,6 +10,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@include file="../include/admin/adminHeader.jsp" %>
 <%@include file="../include/admin/adminNavigator.jsp" %>
@@ -28,6 +29,23 @@
             return false;
         });
     });
+
+    function ajaxProductImage(obj) {
+        var newlocation=$(obj).attr("newlocation");
+        var productImage=$(obj).attr("id");
+        var imagetype=$(obj).attr("imagetype");
+        var edittype=$(obj).attr("edittype");
+        var page="admin_productImage_update";
+        $.post(
+            page,
+            {"piid":productImage,"newlocation":newlocation,"imagetype":imagetype,"edittype":edittype},
+            function (result) {
+                if(result=="success"){
+                    location.reload();
+                }
+            }
+        )
+    }
 
 </script>
 
@@ -63,7 +81,8 @@
                                         <td align="center">
                                             <input type="hidden" name="type" value="type_single"/>
                                             <input type="hidden" name="pid" value="${p.id}"/>
-                                            <button type="submit" class="btn btn-success">提 交</button>
+                                            <input type="hidden" name="location" value="${fn:length(pisSingle)}">
+                                            <button type="submit" class="btn btn-success" <c:if test="${fn:length(pisSingle)==5}"> disabled="disabled" </c:if>>提 交</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -73,16 +92,22 @@
                     <table class="table table-striped table-bordered table-hover  table-condensed">
                         <thead>
                         <tr class="success">
+                            <th>排序</th>
                             <th>ID</th>
                             <th>产品单个图片缩略图</th>
+                            <th>下移</th>
+                            <th>上移</th>
                             <th>删除</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <c:forEach items="${pisSingle}" var="pi">
+                        <tbody id="productSingleImage">
+                        <c:forEach items="${pisSingle}" var="pi" varStatus="count">
                             <tr>
+                                <td>${count.count}</td>
                                 <td>${pi.id}</td>
                                 <td><a title="点击查看原图" href="img/productSingle/${pi.id}.jpg"><img height="50px" src="img/productSingle/${pi.id}.jpg"></a></td>
+                                <td><a id="${pi.id}" newlocation="${count.count}" imagetype="type_single" edittype="down" href="javascript:void(0)" onclick="ajaxProductImage(this)"><span class="glyphicon glyphicon-arrow-down"></span></a></td>
+                                <td><a id="${pi.id}" newlocation="${count.index-1}" imagetype="type_single" edittype="up" href="javascript:void(0)" onclick="ajaxProductImage(this)"><span class="glyphicon glyphicon-arrow-up"></span></a></td>
                                 <td><a deleteLink="true" href="admin_productImage_delete?id=${pi.id}"><span class="glyphicon glyphicon-trash"></span></a></td>
                             </tr>
                         </c:forEach>
@@ -112,6 +137,7 @@
                                         <td align="center">
                                             <input type="hidden" name="type" value="type_detail"/>
                                             <input type="hidden" name="pid" value="${p.id}"/>
+                                            <input type="hidden" name="location" value="${fn:length(pisDetail)}">
                                             <button type="submit" class="btn btn-success">提 交</button>
                                         </td>
                                     </tr>
@@ -122,18 +148,23 @@
                     <table class="table table-striped table-bordered table-hover  table-condensed">
                         <thead>
                         <tr class="success">
+                            <th>排序</th>
                             <th>ID</th>
                             <th>产品详情图片缩略图</th>
+                            <th>下移</th>
+                            <th>上移</th>
                             <th>删除</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <c:forEach items="${pisDetail}" var="pi">
+                        <tbody id="productDetailImage">
+                        <c:forEach items="${pisDetail}" var="pi" varStatus="count">
                             <tr>
+                                <td>${count.count}</td>
                                 <td>${pi.id}</td>
                                 <td><a title="点击查看原图" href="img/productDetail/${pi.id}.jpg"><img height="50px" src="img/productDetail/${pi.id}.jpg"></a></td>
+                                <td><a id="${pi.id}" newlocation="${count.count}" imagetype="type_detail" edittype="down" href="javascript:void(0)" onclick="ajaxProductImage(this)"><span class="glyphicon glyphicon-arrow-down"></span></a></td>
+                                <td><a id="${pi.id}" newlocation="${count.index-1}" imagetype="type_detail" edittype="up" href="javascript:void(0)" onclick="ajaxProductImage(this)"><span class="glyphicon glyphicon-arrow-up"></span></a></td>
                                 <td><a deleteLink="true" href="admin_productImage_delete?id=${pi.id}"><span class="glyphicon glyphicon-trash"></span></a></td>
-
                             </tr>
                         </c:forEach>
                         </tbody>

@@ -5,11 +5,19 @@ public class ProductImage {
     private String type;
     private Product product;
     private int id;
+    private int location;
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -26,4 +34,7 @@ public class ProductImage {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+
+
 }

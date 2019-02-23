@@ -36,10 +36,11 @@ public class ProductImageDAO {
   
     public void add(ProductImage bean) {
  
-        String sql = "insert into ProductImage values(null,?,?)";
+        String sql = "insert into ProductImage values(null,?,?,?)";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
             ps.setInt(1, bean.getProduct().getId());
             ps.setString(2, bean.getType());
+            ps.setInt(3,bean.getLocation());
             ps.execute();
   
             ResultSet rs = ps.getGeneratedKeys();
@@ -52,9 +53,18 @@ public class ProductImageDAO {
             e.printStackTrace();
         }
     }
-  
+
     public void update(ProductImage bean) {
-  
+        String sql = "update productImage set pid=?,type=?,location=? where id = ?";
+        try(Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)){
+            ps.setInt(1,bean.getProduct().getId());
+            ps.setString(2,bean.getType());
+            ps.setInt(3,bean.getLocation());
+            ps.setInt(4,bean.getId());
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
   
     public void delete(int id) {
@@ -84,9 +94,11 @@ public class ProductImageDAO {
                 bean=new ProductImage();
                 int pid = rs.getInt("pid");
                 String type = rs.getString("type");
+                int location=rs.getInt("location");
                 Product product = new ProductDAO().get(pid);
                 bean.setProduct(product);
                 bean.setType(type);
+                bean.setLocation(location);
                 bean.setId(id);
             }
   
@@ -104,7 +116,7 @@ public class ProductImageDAO {
     public List<ProductImage> list(Product p, String type, int start, int count) {
         List<ProductImage> beans = new ArrayList<ProductImage>();
   
-        String sql = "select * from ProductImage where pid =? and type =? order by id desc limit ?,? ";
+        String sql = "select * from ProductImage where pid =? and type =? order by location limit ?,? ";
   
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
   
@@ -120,10 +132,12 @@ public class ProductImageDAO {
  
                 ProductImage bean = new ProductImage();
                 int id = rs.getInt(1);
+                int location=rs.getInt("location");
  
                 bean.setProduct(p);
                 bean.setType(type);
                 bean.setId(id);
+                bean.setLocation(location);
                    
                 beans.add(bean);
             }
@@ -132,6 +146,27 @@ public class ProductImageDAO {
             e.printStackTrace();
         }
         return beans;
+    }
+
+    public static void main(String[] args) {
+//        List<Product> ps=new ProductDAO().list();
+//        for(Product p:ps){
+//            List<ProductImage> pis=new ProductImageDAO().list(p,type_single);
+//            int index=0;
+//            for(ProductImage pi:pis){
+//                pi.setLocation(index);
+//                new ProductImageDAO().update(pi);
+//                index++;
+//            }
+//            List<ProductImage> pis2=new ProductImageDAO().list(p,type_detail);
+//            index=0;
+//            for(ProductImage pi:pis2){
+//                pi.setLocation(index);
+//                new ProductImageDAO().update(pi);
+//                index++;
+//            }
+//        }
+
     }
   
 }
