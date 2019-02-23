@@ -94,6 +94,8 @@ public class ProductServlet extends BaseBackServlet {
     @Override
     public String update(HttpServletRequest request, HttpServletResponse response, Page page) {
         String pageStatus = request.getParameter("productEditPageStatus");
+        if(pageStatus.equals(""))
+            pageStatus="0";
         int pid = Integer.parseInt(request.getParameter("productEditId"));
         Product p = productDAO.get(pid);
         p.setName(request.getParameter("productEditName"));

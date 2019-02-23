@@ -1,9 +1,13 @@
 package tmall.util;
  
+import tmall.bean.Product;
+import tmall.dao.ProductDAO;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
- 
+import java.util.List;
+
 public class DBUtil {
     static String ip = "127.0.0.1";
     static int port = 3306;
@@ -26,7 +30,14 @@ public class DBUtil {
     }
      
     public static void main(String[] args) throws SQLException {
-        System.out.println(getConnection());
+//        List<Product> ps=new ProductDAO().list();
+//        for(Product p:ps){
+//            long original=p.getOriginalPrice()*100;
+//            long promote=p.getPromotePrice()*100;
+//            p.setOriginalPrice(original);
+//            p.setPromotePrice(promote);
+//            new ProductDAO().update(p);
+//        }
          
     }
  

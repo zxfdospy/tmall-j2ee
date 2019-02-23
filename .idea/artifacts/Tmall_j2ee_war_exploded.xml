@@ -7,7 +7,6 @@
           <element id="module-output" name="Tmall-j2ee" />
         </element>
       </element>
-      <element id="library" level="project" name="lib" />
       <element id="javaee-facet-resources" facet="Tmall-j2ee/web/Web" />
     </root>
   </artifact>

@@ -1,6 +1,7 @@
 package tmall.filter;
 
 import org.apache.commons.lang.StringUtils;
+import tmall.bean.User;
 import tmall.util.Page;
 
 import javax.servlet.*;
@@ -19,16 +20,16 @@ public class BackServletFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request=(HttpServletRequest)servletRequest;
         HttpServletResponse response=(HttpServletResponse)servletResponse;
-//        System.out.println("come to backservletFilter");
-
         String contextPath=request.getServletContext().getContextPath();
-//        System.out.println(contextPath);
+        ///tmall
+//        System.out.println("contextPath:"+contextPath);
 
         String uri=request.getRequestURI();
-//        System.out.println(uri);
+        ///tmall/admin_category_list
+//        System.out.println("uri:"+uri);
 
-        StringBuffer url=request.getRequestURL();
-//        System.out.println(url);
+//        StringBuffer url=request.getRequestURL();
+//        System.out.println("url"+url);
 
         uri= StringUtils.remove(uri,contextPath);
 
@@ -36,7 +37,13 @@ public class BackServletFilter implements Filter {
             String servletPath=StringUtils.substringBetween(uri,"_","_")+"Servlet";
 //            response.getWriter().println(servletPath);
             String method=StringUtils.substringAfterLast(uri,"_");
-
+            if (!method.equals("login")) {
+                User admin = (User) request.getSession().getAttribute("admin");
+                if (null == admin) {
+                    response.sendRedirect("adminlogin.jsp");
+                    return;
+                }
+            }
            request.setAttribute("method",method);
            servletRequest.getRequestDispatcher("/"+servletPath).forward(request,response);
            return;
