@@ -48,8 +48,8 @@ public class BaseForeServlet extends HttpServlet{
             Page page = new Page(start,count);
              
             String method = (String) request.getAttribute("method");
-            String thisis=this.getClass().toString();
-            System.out.println(thisis);
+//            String thisis=this.getClass().toString();
+//            System.out.println(thisis);
  
              Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class,
                     javax.servlet.http.HttpServletResponse.class,Page.class);
