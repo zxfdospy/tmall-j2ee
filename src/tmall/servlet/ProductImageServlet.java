@@ -25,7 +25,7 @@ public class ProductImageServlet extends BaseBackServlet {
         //根据上传的参数生成productImage对象
         String type = params.get("type");
         int pid = Integer.parseInt(params.get("pid"));
-        int location=Integer.parseInt(params.get("location"));
+        int location = Integer.parseInt(params.get("location"));
         Product p = productDAO.get(pid);
 
         ProductImage pi = new ProductImage();
@@ -105,15 +105,19 @@ public class ProductImageServlet extends BaseBackServlet {
         String edittype = request.getParameter("edittype");
         Product p = productImageDAO.get(piid).getProduct();
         List<ProductImage> pis = productImageDAO.list(p, imagetype);
+        boolean isChange = false;
         if (edittype.equals("down")) {
             if (newlocation == pis.size())
                 return "%success";
             for (ProductImage pi : pis) {
-                for (ProductImage pi2 : pis) {
-                    if (pi2.getLocation() == newlocation) {
-                        pi2.setLocation(newlocation - 1);
-                        productImageDAO.update(pi2);
-                        break;
+                if (!isChange) {
+                    for (ProductImage pi2 : pis) {
+                        if (pi2.getLocation() == newlocation) {
+                            pi2.setLocation(newlocation - 1);
+                            productImageDAO.update(pi2);
+                            isChange = true;
+                            break;
+                        }
                     }
                 }
                 if (pi.getId() == piid) {
@@ -127,13 +131,15 @@ public class ProductImageServlet extends BaseBackServlet {
                 return "%success";
             }
             for (ProductImage pi : pis) {
-                for (ProductImage pi2 : pis) {
-                    if (pi2.getLocation() == newlocation) {
-                        pi2.setLocation(newlocation + 1);
-                        productImageDAO.update(pi2);
-                        break;
+                if (!isChange) {
+                    for (ProductImage pi2 : pis) {
+                        if (pi2.getLocation() == newlocation) {
+                            pi2.setLocation(newlocation + 1);
+                            productImageDAO.update(pi2);
+                            isChange = true;
+                            break;
+                        }
                     }
-
                 }
                 if (pi.getId() == piid) {
                     pi.setLocation(newlocation);
