@@ -193,7 +193,7 @@
     }
     function syncPrice(pid,num,price){
         $(".orderItemNumberSetting[pid="+pid+"]").val(num);
-        var cartProductItemSmallSumPrice = formatMoney(num*price);
+        var cartProductItemSmallSumPrice = formatMoney(num*price/100);
         $(".cartProductItemSmallSumPrice[pid="+pid+"]").html("￥"+cartProductItemSmallSumPrice);
         calcCartSumPriceAndNumber();
 

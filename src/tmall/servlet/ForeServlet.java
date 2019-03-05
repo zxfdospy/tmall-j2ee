@@ -123,8 +123,6 @@ public class ForeServlet extends BaseForeServlet {
         }else {
             return "%fail";
         }
-
-
     }
 
     public String category(HttpServletRequest request, HttpServletResponse response, Page page) {

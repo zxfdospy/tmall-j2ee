@@ -36,19 +36,19 @@ public class OrderItemDAO {
   
     public void add(OrderItem bean) {
  
-        String sql = "insert into OrderItem values(null,?,?,?,?)";
+        String sql = "insert into OrderItem values(null,?,null,?,?)";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
   
             ps.setInt(1, bean.getProduct().getId());
              
             //订单项在创建的时候，是没有订单信息的
-            if(null==bean.getOrder())
-                ps.setInt(2, -1);
-            else
-                ps.setInt(2, bean.getOrder().getId()); 
+//            if(null==bean.getOrder())
+//                ps.setInt(2, -1);
+//            else
+//                ps.setInt(2, bean.getOrder().getId());
              
-            ps.setInt(3, bean.getUser().getId());
-            ps.setInt(4, bean.getNumber());
+            ps.setInt(2, bean.getUser().getId());
+            ps.setInt(3, bean.getNumber());
             ps.execute();
   
             ResultSet rs = ps.getGeneratedKeys();
@@ -142,7 +142,7 @@ public class OrderItemDAO {
     public List<OrderItem> listByUser(int uid, int start, int count) {
         List<OrderItem> beans = new ArrayList<OrderItem>();
   
-        String sql = "select * from OrderItem where uid = ? and oid=-1 order by id desc limit ?,? ";
+        String sql = "select * from OrderItem where uid = ? and oid is null order by id desc limit ?,? ";
   
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
   
