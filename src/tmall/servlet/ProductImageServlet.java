@@ -39,11 +39,11 @@ public class ProductImageServlet extends BaseBackServlet {
         String imageFolder_small = null;
         String imageFolder_middle = null;
         if (ProductImageDAO.type_single.equals(pi.getType())) {
-            imageFolder = request.getSession().getServletContext().getRealPath("img/productSingle");
-            imageFolder_small = request.getSession().getServletContext().getRealPath("img/productSingle_small");
-            imageFolder_middle = request.getSession().getServletContext().getRealPath("img/productSingle_middle");
+            imageFolder = "/home/tmall_public_resources/img/productSingle";
+            imageFolder_small = "/home/tmall_public_resources/img/productSingle_small";
+            imageFolder_middle ="/home/tmall_public_resources/img/productSingle_middle";
         } else
-            imageFolder = request.getSession().getServletContext().getRealPath("img/productDetail");
+            imageFolder = "/home/tmall_public_resources/img/productDetail";
         File file = new File(imageFolder, fileName);
         file.getParentFile().mkdirs();
         try {
@@ -73,9 +73,9 @@ public class ProductImageServlet extends BaseBackServlet {
         productImageDAO.delete(id);
 
         if (ProductImageDAO.type_single.equals(pi.getType())) {
-            String imageFolder_single = request.getSession().getServletContext().getRealPath("img/productSingle");
-            String imageFolder_small = request.getSession().getServletContext().getRealPath("img/productSingle_small");
-            String imageFolder_middle = request.getSession().getServletContext().getRealPath("img/productSingle_middle");
+            String imageFolder_single = "/home/tmall_public_resources/img/productSingle";
+            String imageFolder_small = "/home/tmall_public_resources/img/productSingle_small";
+            String imageFolder_middle = "/home/tmall_public_resources/img/productSingle_middle";
 
             File f_single = new File(imageFolder_single, pi.getId() + ".jpg");
             f_single.delete();
@@ -85,7 +85,7 @@ public class ProductImageServlet extends BaseBackServlet {
             f_middle.delete();
 
         } else {
-            String imageFolder_detail = request.getSession().getServletContext().getRealPath("img/productDetail");
+            String imageFolder_detail = "/home/tmall_public_resources/img/productDetail";
             File f_detail = new File(imageFolder_detail, pi.getId() + ".jpg");
             f_detail.delete();
         }

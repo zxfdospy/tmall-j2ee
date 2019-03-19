@@ -26,7 +26,7 @@ public class CategoryServlet extends BaseBackServlet{
         c.setName(name);
         categoryDAO.add(c);
         //使用fileitem上传
-        File imageFolder=new File(request.getSession().getServletContext().getRealPath("img/category"));
+        File imageFolder=new File("/home/tmall_public_resources/img/category");
 //        System.out.println(request.getSession().getServletContext().getRealPath(""));
 //        System.out.println(imageFolder.getAbsoluteFile());
         File file=new File(imageFolder,c.getId()+".jpg");
@@ -48,7 +48,7 @@ public class CategoryServlet extends BaseBackServlet{
         int id=Integer.parseInt(request.getParameter("id"));
         categoryDAO.delete(id);
         //同时删除category对应文件
-        File path=new File(request.getSession().getServletContext().getRealPath("img/category"));
+        File path=new File("/home/tmall_public_resources/img/category");
         File img=new File(path,id+".jpg");
         if(img.exists())
             img.delete();
@@ -74,7 +74,7 @@ public class CategoryServlet extends BaseBackServlet{
         categoryDAO.update(c);
 
         //使用fileitem上传
-        File imageFolder=new File(request.getSession().getServletContext().getRealPath("img/category"));
+        File imageFolder=new File("/home/tmall_public_resources/img/category");
 //        System.out.println(request.getSession().getServletContext().getRealPath(""));
 //        System.out.println(imageFolder.getAbsoluteFile());
         File file=new File(imageFolder,c.getId()+".jpg");
