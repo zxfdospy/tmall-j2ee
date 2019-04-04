@@ -124,7 +124,7 @@
 
 
     <div class="text-center" style="width: 400px;margin:20px auto;">
-        <div class="label label-warning">zxfdospy@gmail.com</div>
+        <div class="label label-warning">zxfdospy@gmail.com J2EE</div>
         <div class="label label-primary" id="timeDiv">
             <jsp:useBean id="time" class="java.util.Date"/>
             ${time}

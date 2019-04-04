@@ -46,7 +46,7 @@
 <div id="loginDiv" style="position: relative;">
 
     <div class="simpleLogo">
-        <a href="http://how2j.cn/tmall"><img src="img/site/simpleLogo.png"></a>
+        <a href="http://j2ee_tmall.zxfdospy.com:8888"><img src="img/site/simpleLogo.png"></a>
     </div>
 
     <img id="loginBackgroundImg" class="loginBackgroundImg" src="img/site/loginBackground.png">

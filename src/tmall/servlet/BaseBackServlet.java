@@ -80,6 +80,7 @@ public abstract class BaseBackServlet extends HttpServlet {
             Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class, javax.servlet.http.HttpServletResponse.class, Page.class);
             String redirect = m.invoke(this, req, resp, page).toString();
 
+
 //            System.out.println("come to basebackservlet redirect");
             if (redirect.startsWith("@"))
 //                @开头客户端跳转

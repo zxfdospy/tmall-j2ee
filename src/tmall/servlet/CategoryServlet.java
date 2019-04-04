@@ -4,6 +4,7 @@ import org.apache.commons.fileupload.FileItem;
 import tmall.bean.Category;
 import tmall.util.ImageUtil;
 import tmall.util.Page;
+import tmall.util.PropertiesUtil;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,15 @@ import java.util.List;
 import java.util.Map;
 
 public class CategoryServlet extends BaseBackServlet{
+
+
+    /**
+     * 地址选择
+     * product 为线上环境
+     * dev为开发环境
+     */
+    private static String PROFILE="product";
+
     @Override
     public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
         Map<String,String> params=new HashMap<>();
@@ -26,7 +36,7 @@ public class CategoryServlet extends BaseBackServlet{
         c.setName(name);
         categoryDAO.add(c);
         //使用fileitem上传
-        File imageFolder=new File("/home/tmall_public_resources/img/category");
+        File imageFolder=new File(PropertiesUtil.getProperty(PROFILE+".categoryImage"));
 //        System.out.println(request.getSession().getServletContext().getRealPath(""));
 //        System.out.println(imageFolder.getAbsoluteFile());
         File file=new File(imageFolder,c.getId()+".jpg");
@@ -48,7 +58,7 @@ public class CategoryServlet extends BaseBackServlet{
         int id=Integer.parseInt(request.getParameter("id"));
         categoryDAO.delete(id);
         //同时删除category对应文件
-        File path=new File("/home/tmall_public_resources/img/category");
+        File path=new File(PropertiesUtil.getProperty(PROFILE+".categoryImage"));
         File img=new File(path,id+".jpg");
         if(img.exists())
             img.delete();
@@ -74,7 +84,7 @@ public class CategoryServlet extends BaseBackServlet{
         categoryDAO.update(c);
 
         //使用fileitem上传
-        File imageFolder=new File("/home/tmall_public_resources/img/category");
+        File imageFolder=new File(PropertiesUtil.getProperty(PROFILE+".categoryImage"));
 //        System.out.println(request.getSession().getServletContext().getRealPath(""));
 //        System.out.println(imageFolder.getAbsoluteFile());
         File file=new File(imageFolder,c.getId()+".jpg");

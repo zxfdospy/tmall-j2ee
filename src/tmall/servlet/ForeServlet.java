@@ -13,7 +13,7 @@ import org.springframework.web.util.HtmlUtils;
 import tmall.bean.*;
 import tmall.comparator.*;
 import tmall.dao.*;
-import tmall.util.Page;
+import tmall.util.*;
 
 public class ForeServlet extends BaseForeServlet {
     public String home(HttpServletRequest request, HttpServletResponse response, Page page) {
@@ -45,6 +45,7 @@ public class ForeServlet extends BaseForeServlet {
         return "@registerSuccess.jsp";
     }
 
+
     public String login(HttpServletRequest request, HttpServletResponse response, Page page) {
         String name = request.getParameter("name");
         name = HtmlUtils.htmlEscape(name);
@@ -56,12 +57,27 @@ public class ForeServlet extends BaseForeServlet {
             request.setAttribute("msg", "账号密码错误");
             return "login.jsp";
         }
-        request.getSession().setAttribute("user", user);
+
+//        redis存储状态
+        CookieUtil.writeLoginToken(response,CookieUtil.COOKIE_NAME_USER,request.getSession().getId());
+        RedisPoolUtil.setEx(request.getSession().getId(), JsonUtil.obj2String(user),60*30);//30分钟失效
+        user.setPassword("");
+        request.setAttribute("user",user);
+
+//        session保存登录状态
+//        request.getSession().setAttribute("user", user);
         return "@forehome";
     }
 
+
     public String logout(HttpServletRequest request, HttpServletResponse response, Page page) {
-        request.getSession().removeAttribute("user");
+
+        //        redis退出
+        String admintoken=CookieUtil.readLoginToken(request,CookieUtil.COOKIE_NAME_USER);
+        RedisPoolUtil.del(admintoken);
+
+//        session退出
+        request.removeAttribute("user");
         String now = request.getParameter("now");
         return "@" + now;
     }
@@ -91,7 +107,13 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String checkLogin(HttpServletRequest request, HttpServletResponse response, Page page) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user = (User) request.getSession().getAttribute("user");
         if (null != user)
             return "%success";
         return "%fail";
@@ -112,7 +134,13 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String syncCartNumberAjax(HttpServletRequest request, HttpServletResponse response, Page page) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user = (User) request.getSession().getAttribute("user");
         int cartTotalItemNumber = 0;
         if (null != user) {
             List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
@@ -205,7 +233,14 @@ public class ForeServlet extends BaseForeServlet {
         Product p = productDAO.get(pid);
         int oiid = 0;
 
-        User user = (User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+
+//        User user = (User) request.getSession().getAttribute("user");
         boolean found = false;
         List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
         for (OrderItem oi : ois) {
@@ -251,7 +286,14 @@ public class ForeServlet extends BaseForeServlet {
         Product p = productDAO.get(pid);
         int num = Integer.parseInt(request.getParameter("num"));
 
-        User user = (User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+
+//        User user = (User) request.getSession().getAttribute("user");
         boolean found = false;
 
         List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
@@ -275,14 +317,26 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String cart(HttpServletRequest request, HttpServletResponse response, Page page) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user = (User) request.getSession().getAttribute("user");
         List<OrderItem> ois = orderItemDAO.listByUser(user.getId());
         request.setAttribute("ois", ois);
         return "cart.jsp";
     }
 
     public String changeOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user = (User) request.getSession().getAttribute("user");
         if (null == user)
             return "%fail";
 
@@ -301,7 +355,13 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String deleteOrderItem(HttpServletRequest request, HttpServletResponse response, Page page) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user = (User) request.getSession().getAttribute("user");
         if (null == user)
             return "%fail";
         int oiid = Integer.parseInt(request.getParameter("oiid"));
@@ -310,7 +370,13 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String createOrder(HttpServletRequest request, HttpServletResponse response, Page page){
-        User user =(User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user =(User) request.getSession().getAttribute("user");
 
         List<OrderItem> ois= (List<OrderItem>) request.getSession().getAttribute("ois");
         if(ois.isEmpty())
@@ -361,7 +427,13 @@ public class ForeServlet extends BaseForeServlet {
     }
 
     public String bought(HttpServletRequest request, HttpServletResponse response, Page page) {
-        User user =(User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user =(User) request.getSession().getAttribute("user");
         List<Order> os= orderDAO.list(user.getId(),OrderDAO.delete);
 
         orderItemDAO.fill(os);
@@ -421,7 +493,13 @@ public class ForeServlet extends BaseForeServlet {
 
         content = HtmlUtils.htmlEscape(content);
 
-        User user =(User) request.getSession().getAttribute("user");
+        User user = null;
+        String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+            String userstr = RedisPoolUtil.get(usertoken);
+            user = JsonUtil.string2Obj(userstr, User.class);
+        }
+//        User user =(User) request.getSession().getAttribute("user");
         Review review = new Review();
         review.setContent(content);
         review.setProduct(p);

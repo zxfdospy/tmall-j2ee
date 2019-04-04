@@ -1,6 +1,8 @@
 package tmall.util;
  
 public class DateUtil {
+
+    public static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
  
     public static java.sql.Timestamp d2t(java.util.Date d) {
         if (null == d)

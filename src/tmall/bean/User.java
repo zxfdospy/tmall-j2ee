@@ -1,9 +1,14 @@
 package tmall.bean;
- 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class User {
-    private String password;
-    private String name;
     private int id;
+    private String name;
+    private String password;
+
+
  
     public int getId() {
         return id;
@@ -12,6 +17,9 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+
+
+
     public String getPassword() {
         return password;
     }
@@ -24,6 +32,8 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    @JsonIgnore
     public String getAnonymousName(){
         if(null==name)
             return null;
@@ -41,5 +51,16 @@ public class User {
         return new String(cs);
          
     }
-     
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+
+
 }

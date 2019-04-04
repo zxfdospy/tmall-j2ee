@@ -18,7 +18,10 @@ import org.apache.commons.lang.StringUtils;
 import tmall.bean.OrderItem;
 import tmall.bean.User;
 import tmall.dao.OrderItemDAO;
- 
+import tmall.util.CookieUtil;
+import tmall.util.JsonUtil;
+import tmall.util.RedisPoolUtil;
+
 public class ForeAuthFilter implements Filter{
      
     @Override
@@ -48,11 +51,24 @@ public class ForeAuthFilter implements Filter{
         if(uri.startsWith("/fore")&&!uri.startsWith("/foreServlet")){
             String method = StringUtils.substringAfterLast(uri,"/fore" );
             if(!Arrays.asList(noNeedAuthPage).contains(method)){
-                User user =(User) request.getSession().getAttribute("user");
-                if(null==user){
+                User user = null;
+                String usertoken = CookieUtil.readLoginToken(request, CookieUtil.COOKIE_NAME_USER);
+                if (org.apache.commons.lang3.StringUtils.isNotEmpty(usertoken)) {
+                    String userstr = RedisPoolUtil.get(usertoken);
+                    user = JsonUtil.string2Obj(userstr, User.class);
+                    if(null==user){
+                        response.sendRedirect("login.jsp");
+                        return;
+                    }
+                }else{
                     response.sendRedirect("login.jsp");
                     return;
                 }
+//                User user =(User) request.getSession().getAttribute("user");
+//                if(null==user){
+//                    response.sendRedirect("login.jsp");
+//                    return;
+//                }
             }
         }
          

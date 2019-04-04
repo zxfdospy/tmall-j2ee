@@ -6,6 +6,7 @@ import tmall.bean.ProductImage;
 import tmall.dao.ProductImageDAO;
 import tmall.util.ImageUtil;
 import tmall.util.Page;
+import tmall.util.PropertiesUtil;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductImageServlet extends BaseBackServlet {
+
+    /**
+     * 地址选择
+     * product 为线上环境
+     * dev为开发环境
+     */
+    private static String PROFILE="prodcut";
     @Override
     public String add(HttpServletRequest request, HttpServletResponse response, Page page) {
         Map<String, String> params = new HashMap<>();
@@ -38,12 +46,13 @@ public class ProductImageServlet extends BaseBackServlet {
         String imageFolder;
         String imageFolder_small = null;
         String imageFolder_middle = null;
+
         if (ProductImageDAO.type_single.equals(pi.getType())) {
-            imageFolder = "/home/tmall_public_resources/img/productSingle";
-            imageFolder_small = "/home/tmall_public_resources/img/productSingle_small";
-            imageFolder_middle ="/home/tmall_public_resources/img/productSingle_middle";
+            imageFolder = PropertiesUtil.getProperty(PROFILE+".single.imageFolder");
+            imageFolder_small = PropertiesUtil.getProperty(PROFILE+".single.imageFolder_small");
+            imageFolder_middle =PropertiesUtil.getProperty(PROFILE+".single.imageFolder_middle");
         } else
-            imageFolder = "/home/tmall_public_resources/img/productDetail";
+            imageFolder = PropertiesUtil.getProperty(PROFILE+".detail.imageFolder");
         File file = new File(imageFolder, fileName);
         file.getParentFile().mkdirs();
         try {
@@ -73,9 +82,9 @@ public class ProductImageServlet extends BaseBackServlet {
         productImageDAO.delete(id);
 
         if (ProductImageDAO.type_single.equals(pi.getType())) {
-            String imageFolder_single = "/home/tmall_public_resources/img/productSingle";
-            String imageFolder_small = "/home/tmall_public_resources/img/productSingle_small";
-            String imageFolder_middle = "/home/tmall_public_resources/img/productSingle_middle";
+            String imageFolder_single = PropertiesUtil.getProperty(PROFILE+".single.imageFolder");
+            String imageFolder_small = PropertiesUtil.getProperty(PROFILE+".single.imageFolder_small");
+            String imageFolder_middle =PropertiesUtil.getProperty(PROFILE+".single.imageFolder_middle");
 
             File f_single = new File(imageFolder_single, pi.getId() + ".jpg");
             f_single.delete();
@@ -85,7 +94,7 @@ public class ProductImageServlet extends BaseBackServlet {
             f_middle.delete();
 
         } else {
-            String imageFolder_detail = "/home/tmall_public_resources/img/productDetail";
+            String imageFolder_detail = PropertiesUtil.getProperty(PROFILE+".detail.imageFolder");
             File f_detail = new File(imageFolder_detail, pi.getId() + ".jpg");
             f_detail.delete();
         }
