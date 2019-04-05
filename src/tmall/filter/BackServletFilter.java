@@ -52,6 +52,8 @@ public class BackServletFilter implements Filter {
                         response.sendRedirect("adminlogin.jsp");
                         return;
                     }else {
+                        admin.setPassword("");
+                        request.setAttribute("admin",admin);
                         RedisPoolUtil.expire(admintoken, 60*30);//30分钟
                     }
                 } else {

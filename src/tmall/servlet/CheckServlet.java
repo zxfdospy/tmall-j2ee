@@ -49,8 +49,6 @@ public class CheckServlet extends BaseBackServlet {
 //        redis存储
         CookieUtil.writeLoginToken(response,CookieUtil.COOKIE_NAME_ADMIN,request.getSession().getId());
         RedisPoolUtil.setEx(request.getSession().getId(), JsonUtil.obj2String(admin),60*30);//30分钟失效
-        admin.setPassword("");
-        request.setAttribute("admin",admin);
 //        session存储
 //        request.getSession().setAttribute("admin", admin);
         return "@admin_category_list";

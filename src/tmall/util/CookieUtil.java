@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CookieUtil {
 
-    public final static String COOKIE_DOMAIN = ".zxfdospy.com";
+    public final static String COOKIE_DOMAIN = "zxfdospy.com";
     public final static String COOKIE_NAME_USER = "tmall_user_token";
     public final static String COOKIE_NAME_ADMIN = "tmall_admin_token";
 
